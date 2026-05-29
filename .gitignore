@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env.production
+.env.development
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database
+prisma/dev.db
+prisma/dev.db-journal
+*.db
+*.db-journal
+
+# Prisma (generated)
+prisma/generated/
+
+# Uploads
+uploads/
+
+# Next.js
+.cache/
+tsconfig.tsbuildinfo

@@ -1,0 +1,50 @@
+{
+  "name": "cetcounsel-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-powered MHT-CET college prediction and counseling platform",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:push": "prisma db push",
+    "db:generate": "prisma generate",
+    "db:studio": "prisma studio",
+    "ingest": "npx tsx scripts/ingest-csv.ts"
+  },
+  "keywords": [
+    "mht-cet",
+    "college-predictor",
+    "engineering-admissions"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
+    "@prisma/adapter-neon": "^7.8.0",
+    "@prisma/client": "^6.19.3",
+    "@tanstack/react-query": "^5.100.14",
+    "@types/node": "^25.9.1",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.16.0",
+    "next": "^16.2.6",
+    "pdf-parse": "^1.1.4",
+    "prisma": "^6.19.3",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "tailwind-merge": "^3.6.0",
+    "typescript": "^6.0.3",
+    "zustand": "^5.0.13"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.0",
+    "tsx": "^4.22.3"
+  }
+}

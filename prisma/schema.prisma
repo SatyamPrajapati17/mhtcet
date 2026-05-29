@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")   // Pooled connection for app
+  directUrl = env("DIRECT_URL")     // Direct connection for Prisma CLI
+}
+
+model College {
+  id            String   @id @default(cuid())
+  code          String
+  name          String
+  slug          String   @unique
+  university    String   @default("")
+  region        String   @default("")
+  city          String   @default("")
+  status        String   @default("")
+  fees          Int      @default(0)
+  naacGrade     String   @default("")
+  nirfRank      Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  cutoffs       Cutoff[]
+  seatMatrix    SeatMatrix[]
+}
+
+model Branch {
+  id            String   @id @default(cuid())
+  code          String   @unique
+  name          String
+  category      String   @default("Engineering")
+
+  cutoffs       Cutoff[]
+  seatMatrix    SeatMatrix[]
+}
+
+model Cutoff {
+  id                String   @id @default(cuid())
+  year              Int
+  capRound          Int
+  stage             String   @default("I")
+  collegeId         String
+  branchId          String
+  category          String
+  gender            String   @default("")
+  tfws              String   @default("")
+  minority          String   @default("")
+  openingRank       Int      @default(0)
+  closingRank       Int      @default(0)
+  openingPercentile Float    @default(0)
+  closingPercentile Float    @default(0)
+
+  college           College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  branch            Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@index([collegeId])
+  @@index([branchId])
+  @@index([year, capRound])
+  @@index([category])
+  @@index([closingPercentile])
+  @@index([collegeId, branchId, year, capRound, category])
+}
+
+model SeatMatrix {
+  id            String   @id @default(cuid())
+  collegeId     String
+  branchId      String
+  year          Int
+  category      String
+  totalSeats    Int      @default(0)
+  tfwsSeats     Int      @default(0)
+  minoritySeats Int      @default(0)
+
+  college       College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  branch        Branch   @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@index([collegeId, branchId, year])
+}
+
+model StudentProfile {
+  id            String   @id @default(cuid())
+  percentile    Float
+  marks         Int      @default(0)
+  category      String   @default("OPEN")
+  gender        String   @default("")
+  homeUniversity String  @default("")
+  tfws          Boolean  @default(false)
+  minority      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
