@@ -26,53 +26,22 @@ interface BranchInfo {
   code: string;
 }
 
-// Known MHT CET category base names (sorted longest-first for greedy matching)
+// Known MHT CET category codes (sorted longest-first for greedy matching)
+// Based on actual category codes observed in MHT CET PDFs
 const KNOWN_CATEGORIES = [
   // Ladies categories first (to avoid matching "L" from other context)
-  "PWDROBC", "PWDOPEN", "DEFROBC", "DEFOPEN",
+  "PWDOPENS", "PWDOBCS", "PWDROBC", "PWDRSCS",
+  "DEFOPENS", "DEFOBCS", "DEFRSEBC", "DEFROBC", "DEFOPEN",
   "SDEFOPEN", "SDEF",
-  "GNT1", "GNT2", "GNT3",
-  "LNT1", "LNT2", "LNT3",
-  "GSEBC",
-  "GSBC", "SBC",
-  "GOBC",
-  "LOBC",
-  "GVJ",
-  "LVJ",
-  "GST",
-  "GSC",
-  "LST",
-  "LSC",
-  "GOPEN",
-  "LOPEN",
+  "GOPENS", "GOBCS", "GSEBCS", "GSCS", "GSTS", "GVJS",
+  "GNT1S", "GNT2S", "GNT3S", "GNT",
+  "LOPENS", "LOBCS", "LSEBCS", "LSCS", "LSTS", "LVJS", "LNT1S", "LNT2S", "LNT3S",
   "GTFWS", "TFWS",
   "GEWS", "EWS",
   "STFWS",
-  "DEFRS", "DEFR",
-  "GPWD", "PWD",
-  "GNT",
-  "LNT",
-  "GSBS", "SBS",
-  "GS",
-  "LS",
+  "GS", "LS",
+  "ORPHAN"
 ];
-
-// All possible category suffixes
-const SUFFIXES = ["S", "H", "O", "C", ""];
-
-// Build a complete set of all possible category tokens (base + suffix)
-function buildAllCategoryTokens(): string[] {
-  const tokens = new Set<string>();
-  for (const base of KNOWN_CATEGORIES) {
-    for (const suffix of SUFFIXES) {
-      tokens.add(base + suffix);
-    }
-  }
-  // Sort by length (longest first) for greedy matching
-  return Array.from(tokens).sort((a, b) => b.length - a.length);
-}
-
-const ALL_CATEGORY_TOKENS = buildAllCategoryTokens();
 
 /**
  * Tokenize a concatenated category string like "GOPENSGSCSGSTS" into individual codes.
@@ -155,7 +124,7 @@ function isCategoryHeaderLine(line: string): boolean {
 }
 
 function extractCollegeCodeAndName(line: string): { code: string; name: string } | null {
-  const match = line.trim().match(/^(\d{3,4})\s*-\s*(.+)$/);
+  const match = line.trim().match(/^(\d{3,5})\s*-\s*(.+)$/);
   if (match) return { code: match[1], name: match[2].trim() };
   return null;
 }
@@ -241,7 +210,7 @@ export async function parsePDFFile(filePath: string): Promise<{
 
     // --- 1. College header ---
     const collegeMatch = extractCollegeCodeAndName(line);
-    if (collegeMatch && collegeMatch.code.length >= 3 && collegeMatch.code.length <= 4) {
+    if (collegeMatch) {
       // Flush any remaining pending records
       if (pendingRecords.length > 0 && currentBranchCode) {
         for (const pr of pendingRecords) {
@@ -354,7 +323,7 @@ export async function parsePDFFile(filePath: string): Promise<{
       currentCategories = [];
       currentStage = "I";
       categoryAccumulator = "";
-      expectingCategories = false;
+      expectingCategories = true; // After seat level, we expect category header
       expectingRanks = false;
       rankBuffer = null;
       continue;
@@ -391,19 +360,18 @@ export async function parsePDFFile(filePath: string): Promise<{
     // --- 6. Category header line ---
     // Check if this is a continuation of a multi-line category header
     if (categoryAccumulator) {
-      const tokens = tokenizeCategories(trimmed);
-      if (tokens.length >= 1) {
-        const moreCats = tokenizeCategories(categoryAccumulator + trimmed);
-        if (moreCats.length >= 3) {
-          currentCategories = moreCats;
-          categoryAccumulator = "";
-          expectingRanks = true;
-          rankBuffer = null;
-          continue;
-        }
-      }
-      // Not a continuation, process the accumulator
+      // Try to append this line to our accumulator and see if we get a valid category set
+      const combined = categoryAccumulator + trimmed;
+      const combinedTokens = tokenizeCategories(combined);
+
+      // If combining gives us more tokens than just the accumulator alone, keep accumulating
       const accTokens = tokenizeCategories(categoryAccumulator);
+      if (combinedTokens.length > accTokens.length) {
+        categoryAccumulator = combined;
+        continue;
+      }
+
+      // Otherwise, process what we've accumulated so far
       if (accTokens.length >= 2) {
         // Flush pending records before changing categories
         if (pendingRecords.length > 0) {
@@ -429,9 +397,23 @@ export async function parsePDFFile(filePath: string): Promise<{
         rankBuffer = null;
       }
       categoryAccumulator = "";
+
+      // Now re-evaluate the current line as a fresh category header
+      const tokens = tokenizeCategories(trimmed);
+      if (tokens.length >= 2) {
+        currentCategories = tokens;
+        expectingRanks = true;
+        rankBuffer = null;
+        continue;
+      }
+      // If still not enough tokens, it might be a single char accumulator
+      if (tokens.length >= 1) {
+        categoryAccumulator = trimmed;
+        continue;
+      }
     }
 
-    // Try to tokenize as category header
+    // Try to tokenize as category header (fresh line)
     if (!categoryAccumulator) {
       const tokens = tokenizeCategories(trimmed);
       if (tokens.length >= 2) {
@@ -460,7 +442,7 @@ export async function parsePDFFile(filePath: string): Promise<{
         rankBuffer = null;
         continue;
       }
-      // Short token count - might be multi-line accumulator
+      // Short token count - start accumulating
       if (tokens.length >= 1) {
         categoryAccumulator = trimmed;
         continue;

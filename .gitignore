@@ -43,3 +43,15 @@ uploads/
 # Next.js
 .cache/
 tsconfig.tsbuildinfo
+
+.vercel
+
+# Debug / temp files
+debug-*
+debug.*
+parse-pdfs-proper.ts
+generate-csv-from-parser.ts
+testParse.js
+test_categories.js
+*.log
+*.txt

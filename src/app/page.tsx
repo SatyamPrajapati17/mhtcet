@@ -1,214 +1,378 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   Brain,
   Search,
-  BarChart3,
+  GitCompareArrows,
   GraduationCap,
-  Sparkles,
-  ChevronRight,
-  Shield,
-  Zap,
   TrendingUp,
+  ShieldCheck,
+  Zap,
+  ArrowRight,
+  Sparkles,
+  ChevronDown,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+
+const stats = [
+  { label: "Colleges", value: "300+", icon: GraduationCap },
+  { label: "Cutoff Records", value: "138K+", icon: TrendingUp },
+  { label: "Years of Data", value: "2022-24", icon: Zap },
+  { label: "CAP Rounds", value: "3 Rounds", icon: ShieldCheck },
+];
 
 const features = [
   {
     icon: Brain,
     title: "AI College Prediction",
     description:
-      "Enter your percentile and get personalized college predictions classified as Safe, Moderate, or Dream colleges.",
-    color: "from-blue-500 to-blue-600",
-    bg: "bg-blue-50",
+      "Enter your MHT-CET percentile and get personalized predictions classified as Safe, Moderate, or Dream colleges.",
     href: "/predict",
   },
   {
     icon: Search,
     title: "College Database",
     description:
-      "Search through all MHT-CET colleges with detailed cutoff history, branches, and key information.",
-    color: "from-purple-500 to-purple-600",
-    bg: "bg-purple-50",
+      "Browse 300+ engineering colleges with detailed cutoff history, branch information, and key stats.",
     href: "/colleges",
   },
   {
-    icon: BarChart3,
+    icon: GitCompareArrows,
     title: "College Comparison",
     description:
-      "Compare colleges side by side to make an informed decision about your engineering future.",
-    color: "from-emerald-500 to-emerald-600",
-    bg: "bg-emerald-50",
+      "Compare colleges side by side across cutoffs, location, and rankings to make informed decisions.",
     href: "/compare",
   },
 ];
 
-const stats = [
-  { label: "Colleges", value: "300+", icon: GraduationCap },
-  { label: "Cutoff Records", value: "800K+", icon: TrendingUp },
-  { label: "Years of Data", value: "2022-24", icon: Zap },
-  { label: "CAP Rounds", value: "3 Rounds", icon: Shield },
+const steps = [
+  {
+    number: "01",
+    title: "Enter Your Details",
+    description: "Input your MHT-CET percentile, category, and preferences including city and branch.",
+  },
+  {
+    number: "02",
+    title: "Get AI Predictions",
+    description: "Receive personalized college lists with Safe, Moderate, and Dream classifications.",
+  },
+  {
+    number: "03",
+    title: "Make Smart Decisions",
+    description: "Compare colleges side by side and make data-driven admission decisions.",
+  },
 ];
+
+function GrainOverlay() {
+  return <div className="fixed inset-0 z-[9999] pointer-events-none opacity-[0.025]" 
+    style={{
+      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+      backgroundRepeat: 'repeat',
+      backgroundSize: '256px 256px'
+    }}
+  />;
+}
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE4YzEuNjU3IDAgMy0xLjM0MyAzLTNzLTEuMzQzLTMtMy0zLTMgMS4zNDMtMyAzIDEuMzQzIDMgMyAzem0wIDM2YzEuNjU3IDAgMy0xLjM0MyAzLTNzLTEuMzQzLTMtMy0zLTMgMS4zNDMtMyAzIDEuMzQzIDMgMyAzeiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
-        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
-          <div className="text-center">
-            <div className="mb-6 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm text-white/80 backdrop-blur-sm">
-              <Sparkles className="mr-2 h-4 w-4 text-yellow-300" />
-              AI-Powered MHT-CET Counseling Platform
+    <div className="min-h-[100dvh]">
+      {/* ── Hero: Editorial Split ── */}
+      <section className="relative min-h-[90dvh] flex items-center overflow-hidden">
+        {/* Soft radial glow */}
+        <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-terracotta-500/5 blur-[120px]" />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-terracotta-400/5 blur-[100px]" />
+
+        <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-12 px-4 sm:px-6 lg:px-8 lg:grid-cols-2 lg:gap-20 items-center section-cream">
+          {/* ── Left: Content ── */}
+          <motion.div
+            className="max-w-xl"
+            initial={{ opacity: 0, x: -40, filter: "blur(4px)" }}
+            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
+          >
+            <div className="eyebrow mb-8">
+              <Sparkles className="h-3 w-3 text-terracotta-500 fill-current" />
+              AI-Powered MHT-CET Counseling
             </div>
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
-              Your AI Counselor for
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-400">
-                MHT-CET Admissions
-              </span>
+
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tighter leading-[0.95] text-nut-900">
+              Your AI Counselor
+              <br />
+              <span className="gradient-text-terracotta">for Engineering</span>
+              <br />
+              Admissions
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-blue-100/90">
-              Predict colleges, analyze cutoffs, compare options, and get personalized
-              AI counseling — all in one platform.
+
+            <p className="mt-6 text-base sm:text-lg text-nut-400 leading-relaxed max-w-md">
+              Predict colleges, analyze cutoffs, compare options, and get
+              personalized AI counseling — all in one platform.
             </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+
+            {/* ── Button-in-Button CTAs ── */}
+            <motion.div
+              className="mt-10 flex flex-col sm:flex-row gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
+            >
               <Link href="/predict">
-                <Button size="lg" className="w-full sm:w-auto bg-white text-blue-700 hover:bg-blue-50 shadow-lg">
-                  <Brain className="mr-2 h-5 w-5" />
-                  Predict Your Colleges
-                  <ChevronRight className="ml-2 h-4 w-4" />
-                </Button>
+                <motion.div
+                  className="btn-terracotta"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                >                    <Brain className="h-4 w-4" />
+                    Predict Your Colleges
+                  <span className="btn-icon-wrap">
+                    <ArrowRight className="h-3.5 w-3.5 text-cream-50" />
+                  </span>
+                </motion.div>
               </Link>
               <Link href="/colleges">
-                <Button size="lg" className="w-full sm:w-auto bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-500/40 hover:shadow-purple-500/60 transition-all duration-300">
+                <motion.div
+                  className="btn-ghost"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  <Search className="h-4 w-4" />
                   Browse Colleges
-                </Button>
+                </motion.div>
               </Link>
-            </div>
-          </div>
+            </motion.div>
 
-          {/* Stats */}
-          <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm"
-              >
-                <stat.icon className="mx-auto h-6 w-6 text-blue-200" />
-                <div className="mt-2 text-2xl font-bold text-white">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-blue-200">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-            Everything you need for{" "}
-            <span className="gradient-text">smart counseling</span>
-          </h2>
-          <p className="mt-4 text-lg text-gray-600">
-            Make confident decisions about your engineering future
-          </p>
-        </div>
-
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => {
-            const Icon = feature.icon;
-            return (
-              <Link key={feature.href} href={feature.href}>
-                <Card className="group h-full cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                  <div
-                    className={`inline-flex rounded-xl ${feature.bg} p-3`}
-                  >
-                    <Icon className={`h-6 w-6 text-${feature.color.split(" ")[0].replace("from-", "")}-600`} />
+            {/* ── Stats ── */}
+            <motion.div
+              className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
+            >
+              {stats.map((stat) => {
+                const Icon = stat.icon;
+                return (
+                  <div key={stat.label}>
+                    <div className="text-2xl font-bold tracking-tight text-nut-900">
+                      {stat.value}
+                    </div>
+                    <div className="text-xs text-nut-400 mt-1 flex items-center gap-1">
+                      <Icon className="h-3 w-3 text-terracotta-500" />
+                      {stat.label}
+                    </div>
                   </div>
-                  <h3 className="mt-4 text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                    {feature.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-gray-600">
-                    {feature.description}
-                  </p>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+                );
+              })}
+            </motion.div>
+          </motion.div>
 
-      {/* How it works */}
-      <section className="bg-gray-50 py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-              How it works
-            </h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Get started in 3 simple steps
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-8 sm:grid-cols-3">
-            {[
-              {
-                step: "01",
-                title: "Enter Your Details",
-                description: "Input your MHT-CET percentile, category, and preferences.",
-              },
-              {
-                step: "02",
-                title: "Get AI Predictions",
-                description: "Receive personalized college lists with Safe, Moderate, and Dream classifications.",
-              },
-              {
-                step: "03",
-                title: "Make Smart Decisions",
-                description: "Compare colleges side by side and make data-driven decisions.",
-              },
-            ].map((item) => (
-              <div key={item.step} className="text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full gradient-primary text-2xl font-bold text-white shadow-lg">
-                  {item.step}
+          {/* ── Right: Decorative Double-Bezel Stack ── */}
+          <motion.div
+            className="hidden lg:flex items-center justify-center"
+            initial={{ opacity: 0, scale: 0.9, filter: "blur(8px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            transition={{ duration: 1, delay: 0.3, ease: [0.32, 0.72, 0, 1] }}
+          >
+            <div className="relative">
+              {/* Card 1 */}
+              <div className="doppel-outer w-64 absolute -top-12 -left-12 rotate-[-3deg]">
+                <div className="doppel-inner p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-2 h-2 rounded-full bg-terracotta-300" />
+                    <div className="w-2 h-2 rounded-full bg-terracotta-200" />
+                    <div className="w-2 h-2 rounded-full bg-terracotta-100" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-2 rounded-full bg-cream-300 w-full" />
+                    <div className="h-2 rounded-full bg-cream-300 w-3/4" />
+                    <div className="h-2 rounded-full bg-cream-300 w-5/6" />
+                  </div>
                 </div>
-                <h3 className="mt-6 text-xl font-semibold text-gray-900">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-gray-600">{item.description}</p>
               </div>
-            ))}
+
+              {/* Card 2 */}
+              <div className="doppel-outer w-64 absolute -bottom-8 -right-8 rotate-[2deg]">
+                <div className="doppel-inner p-6">
+                  <div className="inline-flex rounded-2xl bg-terracotta-500/10 p-3 mb-4">
+                    <Brain className="h-8 w-8 text-terracotta-500" />
+                  </div>
+                  <p className="text-sm font-medium text-nut-900">Your Predicted Colleges</p>
+                  <p className="mt-2 text-xs text-nut-400">Based on 95.50 percentile</p>
+                </div>
+              </div>
+
+              {/* Card 3 - hero */}
+              <div className="doppel-outer w-72">
+                <div className="doppel-inner p-8 text-center">
+                  <div className="w-14 h-14 mx-auto rounded-2xl bg-terracotta-500 flex items-center justify-center mb-4">
+                    <GraduationCap className="h-7 w-7 text-cream-50" />
+                  </div>
+                  <p className="text-sm font-semibold text-nut-900">CET Counsel AI</p>
+                  <p className="text-xs text-nut-400 mt-1">Smart Predictions</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: [0.32, 0.72, 0, 1] }}
+        >
+          <ChevronDown className="h-5 w-5 text-nut-300" />
+        </motion.div>
+      </section>
+
+      {/* ── Features: Double-Bezel Bento ── */}
+      <section className="bg-cream-50/50 border-t border-cream-200">
+        <div className="section-container section-cream">
+          <motion.div
+            className="text-center max-w-2xl mx-auto mb-20"
+            initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
+          >
+            <div className="eyebrow justify-center mx-auto w-fit mb-4">
+              <Sparkles className="h-3 w-3 text-terracotta-500 fill-current" />
+              Platform Features
+            </div>
+            <h2 className="text-4xl sm:text-5xl font-bold tracking-tighter text-nut-900">
+              Everything you need for
+              <span className="gradient-text-terracotta"> smart counseling</span>
+            </h2>
+            <p className="mt-4 text-nut-400 max-w-md mx-auto">
+              Make confident decisions about your engineering future with data-driven insights
+            </p>
+          </motion.div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            {features.map((feature, i) => {
+              const Icon = feature.icon;
+              return (
+                <Link key={feature.href} href={feature.href}>
+                  <motion.div
+                    className="doppel-outer group cursor-pointer h-full"
+                    initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
+                    whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    viewport={{ once: true }}
+                    transition={{
+                      delay: i * 0.15,
+                      duration: 0.8,
+                      ease: [0.32, 0.72, 0, 1],
+                    }}
+                    whileHover={{ y: -4 }}
+                  >
+                    <div className="doppel-inner p-8 h-full flex flex-col">
+                      <div className="inline-flex rounded-2xl bg-terracotta-500/10 p-3.5 w-fit transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:bg-terracotta-500/15">
+                        <Icon className="h-6 w-6 text-terracotta-500" />
+                      </div>
+                      <h3 className="mt-6 text-lg font-semibold text-nut-900 transition-colors duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+                        {feature.title}
+                      </h3>
+                      <p className="mt-3 text-sm text-nut-400 flex-1 leading-relaxed">
+                        {feature.description}
+                      </p>
+                      <div className="mt-6 flex items-center gap-1 text-sm font-medium text-terracotta-500 opacity-0 group-hover:opacity-100 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+                        Get started
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </div>
+                    </div>
+                  </motion.div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-2xl gradient-primary p-8 text-center sm:p-12">
+      {/* ── How It Works ── */}
+      <div className="section-container section-cream">
+        <motion.div
+          className="text-center max-w-2xl mx-auto mb-20"
+          initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
+        >
+          <div className="eyebrow justify-center mx-auto w-fit mb-4">
+            <Zap className="h-3 w-3 text-terracotta-500 fill-current" />
+            How It Works
+          </div>
+          <h2 className="text-4xl sm:text-5xl font-bold tracking-tighter text-nut-900">
+            Three simple steps
+          </h2>
+          <p className="mt-4 text-nut-400">
+            Get started in minutes
+          </p>
+        </motion.div>
+
+        <div className="grid gap-10 md:grid-cols-3">
+          {steps.map((step, i) => (
+            <motion.div
+              key={step.number}
+              className="relative text-center"
+              initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true }}
+              transition={{
+                delay: i * 0.15,
+                duration: 0.8,
+                ease: [0.32, 0.72, 0, 1],
+              }}
+            >
+              {i < steps.length - 1 && (
+                <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-px bg-cream-300" />
+              )}
+
+              <div className="doppel-outer w-16 h-16 mx-auto">
+                <div className="doppel-inner w-full h-full flex items-center justify-center">
+                  <span className="text-lg font-bold text-terracotta-500">{step.number}</span>
+                </div>
+              </div>
+
+              <h3 className="mt-8 text-xl font-semibold text-nut-900">
+                {step.title}
+              </h3>
+              <p className="mt-3 text-sm text-nut-400 max-w-xs mx-auto leading-relaxed">
+                {step.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── CTA ── */}
+      <section className="section-container section-cream">
+        <motion.div
+          className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-terracotta-600 via-terracotta-600 to-terracotta-800 p-14 sm:p-20 text-center"
+          initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.08),transparent_50%)]" />
           <div className="relative">
-            <h2 className="text-3xl font-bold text-white">
+            <h2 className="text-4xl sm:text-5xl font-bold tracking-tighter text-cream-50">
               Ready to find your perfect college?
             </h2>
-            <p className="mt-4 text-lg text-blue-100">
+            <p className="mt-4 text-terracotta-100 text-lg max-w-lg mx-auto">
               Start your AI-powered counseling journey now
             </p>
             <Link href="/predict">
-              <Button
-                size="lg"
-                className="mt-6 bg-white text-blue-700 hover:bg-blue-50 shadow-lg"
+              <motion.div
+                className="mt-10 inline-flex items-center gap-2 rounded-full bg-cream-50 px-6 py-3 text-sm font-medium text-terracotta-700 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-cream-100"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
               >
-                <Brain className="mr-2 h-5 w-5" />
+                <Brain className="h-4 w-4" />
                 Start Prediction
-              </Button>
+                <span className="btn-icon-wrap !bg-terracotta-500/10">                    <ArrowRight className="h-3.5 w-3.5 text-terracotta-600" />
+                </span>
+              </motion.div>
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
     </div>
   );
