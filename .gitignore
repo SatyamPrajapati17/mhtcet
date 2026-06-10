@@ -55,3 +55,6 @@ testParse.js
 test_categories.js
 *.log
 *.txt
+
+# Large PDF source files
+*.pdf
