@@ -1,0 +1,22 @@
+# Ignore Flutter app (not needed for Next.js website deployment)
+cet_app
+
+# Ignore Android build files (Capacitor, not needed for Vercel)
+android
+
+# Ignore CSV data (used by Flutter, not needed for website)
+csv
+
+# Ignore www (Capacitor build output)
+www
+
+# Ignore debug files
+debugString.js
+*.log
+*.txt
+
+# Ignore scripts (not needed for production)
+scripts
+
+# Ignore large PDF files
+*.pdf
