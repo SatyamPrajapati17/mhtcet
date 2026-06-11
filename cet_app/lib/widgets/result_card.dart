@@ -63,7 +63,7 @@ class ResultCard extends StatelessWidget {
                     color: AppTheme.nut900,
                   ),
                 ),
-                Text(
+                const Text(
                   'Closing',
                   style: TextStyle(
                     fontSize: 10,

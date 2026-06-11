@@ -106,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                     decoration: AppTheme.doppelInner(),
                     padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         _StatItem(value: '300+', label: 'Colleges', icon: Icons.school),
@@ -160,6 +160,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           'Compare colleges side by side across cutoffs, location, and rankings to make informed decisions.',
                       onTap: () => Navigator.pushNamed(context, '/compare'),
                     ),
+                    const SizedBox(height: 12),
+                    _FeatureCard(
+                      icon: Icons.feedback_outlined,
+                      title: 'Send Feedback',
+                      description:
+                          'Help us improve the app! Share your suggestions, report bugs, or tell us what you think.',
+                      onTap: () => Navigator.pushNamed(context, '/feedback'),
+                    ),
                   ],
                 ),
               ),
@@ -167,13 +175,13 @@ class _HomeScreenState extends State<HomeScreen> {
             const SliverPadding(padding: EdgeInsets.only(top: 40)),
 
             // ── How It Works ──
-            SliverToBoxAdapter(
+            const SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Three simple steps',
                       style: TextStyle(
                         fontSize: 22,
@@ -181,13 +189,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: AppTheme.nut900,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     _StepCard(number: '01', title: 'Enter Your Details',
                         description: 'Input your MHT-CET percentile, category, and preferences.'),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _StepCard(number: '02', title: 'Get AI Predictions',
                         description: 'Receive personalized college lists with Safe, Moderate, and Dream classifications.'),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     _StepCard(number: '03', title: 'Make Smart Decisions',
                         description: 'Compare colleges side by side and make data-driven admission decisions.'),
                   ],
@@ -199,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // ── CTA Banner ──
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 40),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: Container(
                   padding: const EdgeInsets.all(32),
                   decoration: BoxDecoration(
@@ -248,6 +256,35 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
+                ),
+              ),
+            ),
+
+            // ── Privacy & Legal Footer ──
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton.icon(
+                      onPressed: () => Navigator.pushNamed(context, '/privacy'),
+                      icon: const Icon(Icons.shield_outlined, size: 14, color: AppTheme.nut400),
+                      label: const Text(
+                        'Privacy Policy',
+                        style: TextStyle(fontSize: 12, color: AppTheme.nut400),
+                      ),
+                    ),
+                    const Text('·', style: TextStyle(color: AppTheme.nut300, fontSize: 12)),
+                    TextButton.icon(
+                      onPressed: () => Navigator.pushNamed(context, '/feedback'),
+                      icon: const Icon(Icons.feedback_outlined, size: 14, color: AppTheme.nut400),
+                      label: const Text(
+                        'Feedback',
+                        style: TextStyle(fontSize: 12, color: AppTheme.nut400),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -327,7 +364,7 @@ class _FeatureCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: AppTheme.terracotta500.withOpacity(0.1),
+                  color: AppTheme.terracotta500.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, size: 22, color: AppTheme.terracotta500),

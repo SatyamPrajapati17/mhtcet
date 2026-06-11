@@ -3,7 +3,7 @@ import { predictColleges, type PredictionInput } from "@/lib/prediction-engine";
 
 export async function POST(request: NextRequest) {
   try {
-    const raw = await request.json();
+    const raw: Record<string, any> = await request.json();
     const percentile = raw.percentile;
 
     if (!percentile || percentile <= 0) {
@@ -15,8 +15,18 @@ export async function POST(request: NextRequest) {
 
     // Convert single branch string to preferredBranches array
     const body: PredictionInput = {
-      ...raw,
-      preferredBranches: raw.branch ? [raw.branch] : undefined,
+      percentile: Number(raw.percentile) || 0,
+      marks: Number(raw.marks) || 0,
+      category: String(raw.category || "GOPENS"),
+      gender: String(raw.gender || ""),
+      homeUniversity: String(raw.homeUniversity || ""),
+      tfws: Boolean(raw.tfws),
+      minority: Boolean(raw.minority),
+      preferredBranches: raw.branch ? [String(raw.branch)] : undefined,
+      preferredColleges: raw.preferredColleges,
+      city: raw.city || undefined,
+      year: raw.year ? Number(raw.year) : undefined,
+      capRound: raw.capRound ? Number(raw.capRound) : undefined,
     };
 
     const result = await predictColleges(body);

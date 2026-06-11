@@ -12,6 +12,14 @@ const BAD_CITY_PATTERNS = [
   /\bengineering\b/i,          // Contains "engineering"
   /\btechnology\b/i,           // Contains "technology"
   /\bgroup\s+of\b/i,           // "Group of" institutions
+  /\bmanagement\b/i,           // Contains "management"
+  /\bacademy\b/i,              // Contains "academy"
+  /\beducation\b/i,            // Contains "education"
+  /\bsociety\b/i,              // Contains "society"
+  /\btrust\b/i,                // Contains "trust"
+  /\bschool\b/i,               // Contains "school"
+  /\bcentre\b/i,               // Contains "centre"
+  /\bcenter\b/i,               // Contains "center"
 ];
 
 function isCleanCity(city: string): boolean {

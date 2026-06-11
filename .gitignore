@@ -58,3 +58,35 @@ test_categories.js
 
 # Large PDF source files
 *.pdf
+
+# Flutter app build artifacts
+cet_app/build/
+cet_app/.dart_tool/
+cet_app/.packages
+cet_app/.pub/
+cet_app/.flutter-plugins*
+cet_app/ios/
+cet_app/.android/
+
+# Flutter app - Firebase & signing secrets
+cet_app/android/app/google-services.json
+cet_app/android/key.properties
+cet_app/android/*.jks
+cet_app/android/*.keystore
+cet_app/android/.gradle/
+
+# Flutter generated JSON data (can be regenerated)
+cet_app/assets/data/*.json
+
+# Capacitor / Android build outputs
+android/.gradle/
+android/app/build/
+
+# www/ is a build output (not source)
+www/
+
+# CSV data is not sensitive, but large
+# csv/ is already tracked if needed
+
+# DebugString.js
+/debugString.js

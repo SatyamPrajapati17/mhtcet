@@ -6,11 +6,13 @@ export async function GET() {
     const branches = await prisma.branch.findMany({
       where: { name: { not: "" } },
       select: { name: true },
-      distinct: ["name"],
       orderBy: { name: "asc" },
     });
 
-    return NextResponse.json({ branches: branches.map((b) => b.name) });
+    // Deduplicate by name using Set (avoid Prisma distinct issues)
+    const uniqueNames = [...new Set(branches.map((b) => b.name))];
+
+    return NextResponse.json({ branches: uniqueNames });
   } catch (error) {
     console.error("Branches fetch error:", error);
     return NextResponse.json(

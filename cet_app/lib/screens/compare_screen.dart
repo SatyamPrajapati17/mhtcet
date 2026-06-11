@@ -100,7 +100,7 @@ class _CompareScreenState extends State<CompareScreen> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: AppTheme.terracotta500.withOpacity(0.1),
+                    color: AppTheme.terracotta500.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(Icons.bar_chart, size: 22, color: AppTheme.terracotta500),
@@ -165,17 +165,17 @@ class _CompareScreenState extends State<CompareScreen> {
             // Results
             if (_results != null) _buildComparisonTable(),
             if (_results == null && !_isLoading)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 40),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 40),
                 child: Center(
                   child: Column(
                     children: [
                       Icon(Icons.bar_chart, size: 48, color: AppTheme.nut300),
-                      const SizedBox(height: 12),
-                      const Text('Compare colleges side by side',
+                      SizedBox(height: 12),
+                      Text('Compare colleges side by side',
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.nut600)),
-                      const SizedBox(height: 4),
-                      const Text('Select 2-4 colleges and tap Compare.',
+                      SizedBox(height: 4),
+                      Text('Select 2-4 colleges and tap Compare.',
                           style: TextStyle(fontSize: 13, color: AppTheme.nut400)),
                     ],
                   ),
@@ -226,7 +226,7 @@ class _CompareScreenState extends State<CompareScreen> {
               hintText: 'Search college...',
               prefixIcon: const Icon(Icons.search, size: 18),
               suffixIcon: college != null
-                  ? Icon(Icons.check_circle, size: 18, color: AppTheme.safeGreen)
+                  ? const Icon(Icons.check_circle, size: 18, color: AppTheme.safeGreen)
                   : null,
             ),
             onChanged: (v) {
@@ -247,7 +247,7 @@ class _CompareScreenState extends State<CompareScreen> {
                 border: Border.all(color: AppTheme.cream200),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -383,8 +383,8 @@ class _CompareScreenState extends State<CompareScreen> {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(color: AppTheme.cream200, width: isLast ? 0 : 0.5),
-              left: BorderSide(color: AppTheme.cream200),
-              right: BorderSide(color: AppTheme.cream200),
+              left: const BorderSide(color: AppTheme.cream200),
+              right: const BorderSide(color: AppTheme.cream200),
             ),
           ),
           child: Text(label,
@@ -397,7 +397,7 @@ class _CompareScreenState extends State<CompareScreen> {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(color: AppTheme.cream200, width: isLast ? 0 : 0.5),
-              right: BorderSide(color: AppTheme.cream200),
+              right: const BorderSide(color: AppTheme.cream200),
             ),
           ),
           child: Text(v == '-' ? '-' : v,

@@ -9,14 +9,14 @@ class DataService {
   DataService._();
 
   bool _loaded = false;
-  List<College> _colleges = [];
-  List<Branch> _branches = [];
-  List<Cutoff> _cutoffs = [];
-  Map<String, College> _collegeByCode = {};
-  Map<String, Branch> _branchByCode = {};
+  final List<College> _colleges = [];
+  final List<Branch> _branches = [];
+  final List<Cutoff> _cutoffs = [];
+  final Map<String, College> _collegeByCode = {};
+  final Map<String, Branch> _branchByCode = {};
   Set<String> _cities = {};
-  Set<String> _categories = {};
-  Set<int> _years = {};
+  final Set<String> _categories = {};
+  final Set<int> _years = {};
   List<String> _branchNames = [];
 
   bool get isLoaded => _loaded;

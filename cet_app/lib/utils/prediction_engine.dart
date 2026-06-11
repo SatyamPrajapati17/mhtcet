@@ -1,7 +1,7 @@
 import '../models/prediction_model.dart';
 import '../models/college_model.dart';
 import '../models/cutoff_model.dart';
-import 'data_service.dart';
+import '../data/data_service.dart';
 
 /// Prediction engine ported from the TypeScript version.
 /// Predicts colleges based on user percentile and filters.

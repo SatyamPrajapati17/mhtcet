@@ -64,7 +64,7 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: AppTheme.terracotta500.withOpacity(0.1),
+                        color: AppTheme.terracotta500.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: const Icon(Icons.business, size: 24, color: AppTheme.terracotta500),
@@ -90,7 +90,7 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                                     style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: AppTheme.nut500)),
                               ),
                               const SizedBox(width: 8),
-                              Icon(Icons.location_on, size: 14, color: AppTheme.nut400),
+                              const Icon(Icons.location_on, size: 14, color: AppTheme.nut400),
                               const SizedBox(width: 2),
                               Text(college.displayCity,
                                   style: const TextStyle(fontSize: 13, color: AppTheme.nut400)),
@@ -111,7 +111,7 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                 if (years.length > 1)
                   Expanded(
                     child: DropdownButtonFormField<int>(
-                      value: _selectedYear,
+                      initialValue: _selectedYear,
                       decoration: const InputDecoration(
                         labelText: 'Year',
                         contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -130,7 +130,7 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                 if (capRounds.length > 1)
                   Expanded(
                     child: DropdownButtonFormField<int>(
-                      value: _selectedCapRound,
+                      initialValue: _selectedCapRound,
                       decoration: const InputDecoration(
                         labelText: 'CAP Round',
                         contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -189,7 +189,7 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                         // Table header
                         Container(
                           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(bottom: BorderSide(color: AppTheme.cream200)),
                           ),
                           child: const Row(
@@ -206,7 +206,7 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
                         // Table rows
                         ...filteredCutoffs.map((c) => Container(
                           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(bottom: BorderSide(color: AppTheme.cream200, width: 0.5)),
                           ),
                           child: Row(
@@ -252,14 +252,14 @@ class _CollegeDetailScreenState extends State<CollegeDetailScreen> {
             }),
 
             if (branchNames.isEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 40),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 40),
                 child: Center(
                   child: Column(
                     children: [
                       Icon(Icons.school, size: 48, color: AppTheme.nut300),
-                      const SizedBox(height: 12),
-                      const Text('No cutoff data available for this college.',
+                      SizedBox(height: 12),
+                      Text('No cutoff data available for this college.',
                           style: TextStyle(fontSize: 14, color: AppTheme.nut500)),
                     ],
                   ),

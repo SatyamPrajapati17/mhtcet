@@ -68,7 +68,7 @@ class _CollegesScreenState extends State<CollegesScreen> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: AppTheme.terracotta500.withOpacity(0.1),
+                    color: AppTheme.terracotta500.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(Icons.business, size: 22, color: AppTheme.terracotta500),
@@ -107,7 +107,7 @@ class _CollegesScreenState extends State<CollegesScreen> {
 
             // City Filter
             DropdownButtonFormField<String>(
-              value: _selectedCity,
+              initialValue: _selectedCity,
               decoration: const InputDecoration(
                 hintText: 'All Cities',
                 prefixIcon: Icon(Icons.filter_list, size: 20),
@@ -156,16 +156,16 @@ class _CollegesScreenState extends State<CollegesScreen> {
             )),
 
             if (results.isEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 60),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 60),
                 child: Center(
                   child: Column(
                     children: [
                       Icon(Icons.business, size: 48, color: AppTheme.nut300),
-                      const SizedBox(height: 16),
-                      const Text('No colleges found', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppTheme.nut800)),
-                      const SizedBox(height: 4),
-                      const Text('Try a different search term or browse all colleges.',
+                      SizedBox(height: 16),
+                      Text('No colleges found', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppTheme.nut800)),
+                      SizedBox(height: 4),
+                      Text('Try a different search term or browse all colleges.',
                           style: TextStyle(fontSize: 13, color: AppTheme.nut400)),
                     ],
                   ),

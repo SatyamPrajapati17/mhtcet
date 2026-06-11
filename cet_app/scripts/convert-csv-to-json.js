@@ -31,6 +31,12 @@ const cutoffs = []; // array of compact cutoff objects
 
 let totalRows = 0;
 
+/** Strip leading zeros from a code string to normalize across CSV formats */
+function stripLeadingZeros(code) {
+  const stripped = code.replace(/^0+/, "");
+  return stripped || code;
+}
+
 function parseCSV(content) {
   const lines = content.split("\n").filter((l) => l.trim().length > 0);
   if (lines.length === 0) return [];
@@ -94,30 +100,49 @@ for (const csvFile of csvFiles) {
   const rows = parseCSV(content);
   totalRows += rows.length;
   
-  for (const row of rows) {
-    const collegeCode = String(row.collegeCode || row.CollegeCode || "").trim();
-    let collegeName = row.collegeName || row.CollegeName || "";
-    collegeName = collegeName.replace(/^"+|"+$/g, "").trim();
-    
-    const branchCode = String(row.branchCode || row.BranchCode || "").trim();
-    let branchName = row.branchName || row.BranchName || "";
-    branchName = branchName.replace(/^"+|"+$/g, "").trim();
-    
-    const year = parseInt(row.year || row.Year || row.Year);
-    const capRound = parseInt(row.capRound || row.CapRound || row.cap_round || 0);
-    const category = (row.category || row.Category || "").trim();
-    const stage = (row.stage || row.Stage || "I").trim();
-    const rank = parseInt(row.rank || row.Rank || row.ClosingRank || 0);
-    const percentile = parseFloat(row.percentile || row.Percentile || row.ClosingPercentile || 0);
-    const seatLevel = (row.seatLevel || row.SeatLevel || "State Level").trim();
-    
-    // Extract city from college name (look for patterns like "CollegeName,City")
+    for (const row of rows) {
+    // Detect which CSV format by checking which columns are present
+    const is2024Format = row.Institute_Code !== undefined;
+
+    let collegeCode, collegeName, branchCode, branchName;
+    let year, capRound, category, rank, percentile, seatLevel;
+    let stage = "";
+
+    if (is2024Format) {
+      // 2024 format: CAP_Round,Institute_Code,Institute_Name,Course_Code,Course_Name,...
+      collegeCode = stripLeadingZeros(String(row.Institute_Code || "").trim());
+      collegeName = (row.Institute_Name || "").replace(/^"+|"+$/g, "").trim();
+      branchCode = stripLeadingZeros(String(row.Course_Code || "").trim());
+      branchName = (row.Course_Name || "").replace(/^"+|"+$/g, "").trim();
+      year = 2024;
+      const capRoundStr = String(row.CAP_Round || "").trim();
+      capRound = parseInt(capRoundStr.replace("CAP", ""), 10) || 0;
+      category = (row.Category || "").trim();
+      rank = parseInt(row.Merit_No || row.rank || 0, 10);
+      percentile = parseFloat(row.Percentile || 0);
+      seatLevel = (row.Section || "State Level").trim();
+    } else {
+      // 2022/2023 format: collegeCode,collegeName,branchCode,branchName,year,capRound,...
+      collegeCode = String(row.collegeCode || row.CollegeCode || "").trim();
+      collegeName = (row.collegeName || row.CollegeName || "").replace(/^"+|"+$/g, "").trim();
+      branchCode = String(row.branchCode || row.BranchCode || "").trim();
+      branchName = (row.branchName || row.BranchName || "").replace(/^"+|"+$/g, "").trim();
+      year = parseInt(row.year || row.Year, 10);
+      capRound = parseInt(row.capRound || row.CapRound || row.cap_round || 0, 10);
+      category = (row.category || row.Category || "").trim();
+      stage = (row.stage || row.Stage || "I").trim();
+      rank = parseInt(row.rank || row.Rank || row.ClosingRank || 0, 10);
+      percentile = parseFloat(row.percentile || row.Percentile || row.ClosingPercentile || 0);
+      seatLevel = (row.seatLevel || row.SeatLevel || "State Level").trim();
+    }
+
+    // Extract city from college name (look for patterns like "CollegeName, City")
     let city = "";
     const cityMatch = collegeName.match(/,\s*(.+)$/);
     if (cityMatch) {
       city = cityMatch[1].trim();
     }
-    
+
     if (collegeCode && !colleges.has(collegeCode)) {
       colleges.set(collegeCode, {
         c: collegeCode,
@@ -125,14 +150,14 @@ for (const csvFile of csvFiles) {
         t: city, // town/city
       });
     }
-    
+
     if (branchCode && !branches.has(branchCode)) {
       branches.set(branchCode, {
         c: branchCode,
         n: branchName,
       });
     }
-    
+
     if (collegeCode && branchCode && !isNaN(percentile) && percentile > 0) {
       cutoffs.push([
         collegeCode,

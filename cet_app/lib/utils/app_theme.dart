@@ -197,8 +197,8 @@ class AppTheme {
       borderRadius: BorderRadius.circular(radius),
       gradient: LinearGradient(
         colors: [
-          terracotta500.withOpacity(0.08),
-          terracotta500.withOpacity(0.04),
+          terracotta500.withValues(alpha: 0.08),
+          terracotta500.withValues(alpha: 0.04),
         ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
@@ -212,7 +212,7 @@ class AppTheme {
       color: cream50,
       boxShadow: [
         BoxShadow(
-          color: Colors.white.withOpacity(0.6),
+          color: Colors.white.withValues(alpha: 0.6),
           blurRadius: 1,
           offset: const Offset(0, 1),
         ),

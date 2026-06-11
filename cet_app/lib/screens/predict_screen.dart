@@ -119,7 +119,7 @@ class _PredictScreenState extends State<PredictScreen> {
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: AppTheme.terracotta500.withOpacity(0.1),
+                            color: AppTheme.terracotta500.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: const Icon(Icons.psychology, size: 20, color: AppTheme.terracotta500),
@@ -153,7 +153,7 @@ class _PredictScreenState extends State<PredictScreen> {
                     const Text('Category', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppTheme.nut700)),
                     const SizedBox(height: 6),
                     DropdownButtonFormField<String>(
-                      value: _category,
+                      initialValue: _category,
                       decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.category, size: 18),
                       ),
@@ -179,7 +179,7 @@ class _PredictScreenState extends State<PredictScreen> {
                           const Text('Gender', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppTheme.nut700)),
                           const SizedBox(height: 6),
                           DropdownButtonFormField<String>(
-                            value: _gender.isEmpty ? null : _gender,
+                            initialValue: _gender.isEmpty ? null : _gender,
                             decoration: const InputDecoration(
                               hintText: 'All Genders',
                             ),
@@ -207,7 +207,7 @@ class _PredictScreenState extends State<PredictScreen> {
                     const Text('City', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppTheme.nut700)),
                     const SizedBox(height: 6),
                     DropdownButtonFormField<String>(
-                      value: _selectedCity,
+                      initialValue: _selectedCity,
                       decoration: const InputDecoration(
                         hintText: 'All Cities',
                         prefixIcon: Icon(Icons.location_on, size: 18),
@@ -225,7 +225,7 @@ class _PredictScreenState extends State<PredictScreen> {
                     const Text('Branch', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppTheme.nut700)),
                     const SizedBox(height: 6),
                     DropdownButtonFormField<String>(
-                      value: _selectedBranch,
+                      initialValue: _selectedBranch,
                       decoration: const InputDecoration(
                         hintText: 'All Branches',
                         prefixIcon: Icon(Icons.school, size: 18),
@@ -249,7 +249,7 @@ class _PredictScreenState extends State<PredictScreen> {
                               const Text('Data Year', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppTheme.nut700)),
                               const SizedBox(height: 6),
                               DropdownButtonFormField<int>(
-                                value: _year,
+                                initialValue: _year,
                                 items: _data.years.map((y) => DropdownMenuItem(
                                   value: y,
                                   child: Text('$y-${(y + 1) % 100}', style: const TextStyle(fontSize: 14)),
@@ -267,7 +267,7 @@ class _PredictScreenState extends State<PredictScreen> {
                               const Text('CAP Round', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppTheme.nut700)),
                               const SizedBox(height: 6),
                               DropdownButtonFormField<int>(
-                                value: _capRound,
+                                initialValue: _capRound,
                                 items: const [
                                   DropdownMenuItem(value: 0, child: Text('All Rounds')),
                                   DropdownMenuItem(value: 3, child: Text('Round 3 (Final)')),
@@ -406,7 +406,7 @@ class _PredictScreenState extends State<PredictScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppTheme.terracotta500.withOpacity(0.1),
+                    color: AppTheme.terracotta500.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(100),
                     border: Border.all(color: AppTheme.terracotta200),
                   ),

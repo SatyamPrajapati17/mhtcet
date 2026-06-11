@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
       ];
     }
     if (city) {
-      where.city = { equals: city, mode: "insensitive" };
+      where.city = city;
     }
 
     const [colleges, total] = await Promise.all([

@@ -65,7 +65,7 @@ class CollegeCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    Icon(Icons.location_on_outlined, size: 14, color: AppTheme.nut400),
+                    const Icon(Icons.location_on_outlined, size: 14, color: AppTheme.nut400),
                     const SizedBox(width: 4),
                     Text(
                       college.city,
@@ -81,14 +81,14 @@ class CollegeCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    Icon(Icons.school_outlined, size: 14, color: AppTheme.nut400),
+                    const Icon(Icons.school_outlined, size: 14, color: AppTheme.nut400),
                     const SizedBox(width: 4),
                     Text(
                       '$cutoffCount cutoff records',
                       style: const TextStyle(fontSize: 12, color: AppTheme.nut400),
                     ),
                     const Spacer(),
-                    Icon(
+                    const Icon(
                       Icons.arrow_forward_ios,
                       size: 12,
                       color: AppTheme.nut300,

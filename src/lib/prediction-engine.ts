@@ -2,12 +2,12 @@ import { prisma } from "./prisma";
 
 export type PredictionInput = {
   percentile: number;
-  marks: number;
+  marks?: number;
   category: string;
-  gender: string;
-  homeUniversity: string;
-  tfws: boolean;
-  minority: boolean;
+  gender?: string;
+  homeUniversity?: string;
+  tfws?: boolean;
+  minority?: boolean;
   preferredBranches?: string[];
   preferredColleges?: string[];
   city?: string;
@@ -69,12 +69,20 @@ let categoryVariantsCache: Promise<Map<string, string[]>> | null = null;
  *       "TFWS"  → ["TFWS"] (no seat-level variants)
  */
 async function buildCategoryVariants(): Promise<Map<string, string[]>> {
+  // Fetch all categories (avoid Prisma distinct issues, deduplicate in JS)
   const rows = await prisma.cutoff.findMany({
-    distinct: ["category"],
     select: { category: true },
   });
 
-  const allCategories = rows.map((r) => r.category);
+  const seen = new Set<string>();
+  const allCategories = rows
+    .map((r) => r.category)
+    .filter((cat) => {
+      if (seen.has(cat)) return false;
+      seen.add(cat);
+      return true;
+    });
+  
   const groups = new Map<string, string[]>();
 
   // Group by base category (strip trailing S/H/O if applicable)
@@ -319,14 +327,15 @@ export async function predictColleges(
   // so the UI can show a helpful message
   let availableYears: number[] = [];
   if (results.length === 0) {
+    // Fetch available years (avoid Prisma distinct issues)
     const yearRows = await prisma.cutoff.findMany({
       where: {
         category: { in: categoriesToMatch },
       },
-      distinct: ["year"],
       select: { year: true },
     });
-    availableYears = yearRows.map((r) => r.year).sort();
+    const yearSet = new Set(yearRows.map((r) => r.year));
+    availableYears = [...yearSet].sort((a, b) => a - b);
   }
 
   return {
