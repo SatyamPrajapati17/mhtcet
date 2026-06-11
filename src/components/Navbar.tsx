@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { GraduationCap, Brain, Search, GitCompareArrows, X } from "lucide-react";
+import { GraduationCap, Brain, Search, GitCompareArrows, MessageSquareText } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "/predict", label: "Predict", desc: "AI College Predictions", icon: Brain },
   { href: "/colleges", label: "Colleges", desc: "Browse All Colleges", icon: Search },
   { href: "/compare", label: "Compare", desc: "Side-by-Side Analysis", icon: GitCompareArrows },
+  { href: "/feedback", label: "Feedback", desc: "Share Your Thoughts", icon: MessageSquareText },
 ];
 
 export default function Navbar() {
