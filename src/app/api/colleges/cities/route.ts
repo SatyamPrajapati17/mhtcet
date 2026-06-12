@@ -1,6 +1,30 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+// ─── Suburb to Parent City Mapping ───
+// Same mapping used in prediction-engine.ts for city filter expansion
+// Suburbs/areas are mapped to their parent cities so "Andheri" shows as "Mumbai"
+const CITY_SUBURBS: Record<string, string[]> = {
+  "Navi Mumbai": ["Panvel", "Vashi", "Nerul", "Airoli", "Ghansoli", "Belapur", "Kharghar", "Kamothe", "Kalamboli", "New Panvel"],
+  "Mumbai": ["Andheri", "Bhayander", "Bhiwandi", "Kandivali", "Matunga", "Boisar", "Palghar"],
+  "Pune": ["Pimpri", "Chinchwad", "Haveli", "Pisoli", "Ravet", "Sasewadi", "Talegaon", "Wagholi", "Avasari Khurd"],
+  "Sangli": ["Miraj"],
+  "Amravati": ["Badnera", "Shegaon"],
+  "Nashik": ["Nepti", "Nadurbar"],
+  "Kalyan": ["Dombivli", "Ulhasnagar", "Ambernath", "Badlapur"],
+  "Kolhapur": ["Ichalkaranji", "Panhala"],
+  "Solapur": ["Barshi"],
+  "Nagpur": ["Ramtek", "Wardha"],
+};
+
+// Build reverse lookup: suburb (lowercased) → parent city
+const SUBURB_TO_PARENT: Record<string, string> = {};
+for (const [parent, suburbs] of Object.entries(CITY_SUBURBS)) {
+  for (const suburb of suburbs) {
+    SUBURB_TO_PARENT[suburb.toLowerCase()] = parent;
+  }
+}
+
 // Known institution substrings to filter out
 const BAD_CITY_PATTERNS = [
   /^\d+$/,                     // Pure numbers
@@ -35,10 +59,24 @@ export async function GET() {
       orderBy: { city: "asc" },
     });
 
+    // Get all unique city names
     const cities = [...new Set(colleges.map((c) => c.city))];
+
+    // Step 1: Filter out bad patterns
     const cleanCities = cities.filter(isCleanCity);
 
-    return NextResponse.json({ cities: cleanCities });
+    // Step 2: Normalize suburbs to their parent cities
+    // e.g., "Andheri" → "Mumbai", "Panvel" → "Navi Mumbai"
+    const normalized = cleanCities.map((city) => {
+      const lower = city.toLowerCase();
+      const parent = SUBURB_TO_PARENT[lower];
+      return parent || city; // Map to parent city, or keep as-is
+    });
+
+    // Step 3: Deduplicate after normalization
+    const uniqueCities = [...new Set(normalized)].sort();
+
+    return NextResponse.json({ cities: uniqueCities });
   } catch (error) {
     console.error("Cities fetch error:", error);
     return NextResponse.json(

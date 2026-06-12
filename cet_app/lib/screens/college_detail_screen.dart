@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../data/data_service.dart';
-import '../models/cutoff_model.dart';
 import '../utils/app_theme.dart';
 
 class CollegeDetailScreen extends StatefulWidget {

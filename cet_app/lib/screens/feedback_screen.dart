@@ -36,7 +36,7 @@ class FeedbackScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppTheme.terracotta500.withOpacity(0.1),
+                        color: AppTheme.terracotta500.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: const Icon(
@@ -83,7 +83,7 @@ class FeedbackScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // ── Info Cards ──
-            Row(
+            const Row(
               children: [
                 Expanded(
                   child: _InfoCard(
@@ -93,7 +93,7 @@ class FeedbackScreen extends StatelessWidget {
                         'Have an idea for a new feature? Let us know what would make your counseling experience better.',
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12),
                 Expanded(
                   child: _InfoCard(
                     icon: Icons.bug_report_outlined,
@@ -105,7 +105,7 @@ class FeedbackScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            _InfoCard(
+            const _InfoCard(
               icon: Icons.forum_outlined,
               title: 'General Feedback',
               description:

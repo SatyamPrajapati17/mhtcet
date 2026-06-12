@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'data/data_service.dart';
 import 'services/auth_service.dart';
@@ -15,8 +18,15 @@ import 'utils/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase
-  await Firebase.initializeApp();
+  // Initialize Firebase. If FirebaseOptions are missing on web this will
+  // throw — catch the error so the app can still run for local debugging.
+  try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    // Log and continue — the app will run but Firebase features will be disabled
+    // until proper web Firebase config is provided (see README below).
+    debugPrint('Firebase initialization failed: $e');
+  }
 
   // Load the data before running the app
   final dataService = DataService();
@@ -64,7 +74,7 @@ class AuthGate extends StatefulWidget {
 class _AuthGateState extends State<AuthGate> {
   final _auth = AuthService();
   bool _isChecking = true;
-  late final _authSubscription;
+  late final StreamSubscription<User?> _authSubscription;
 
   @override
   void initState() {
@@ -74,6 +84,11 @@ class _AuthGateState extends State<AuthGate> {
       if (mounted) {
         setState(() => _isChecking = false);
       }
+    });
+    // Fallback: if no auth event arrives (e.g. Firebase not configured for web),
+    // stop showing the loading spinner after a short timeout so the UI is usable.
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted && _isChecking) setState(() => _isChecking = false);
     });
   }
 
@@ -106,7 +121,6 @@ class MainShell extends StatefulWidget {
 }
 
 class _MainShellState extends State<MainShell> {
-  final _auth = AuthService();
   int _currentIndex = 0;
 
   final List<Widget> _screens = const [

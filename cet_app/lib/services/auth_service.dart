@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -7,24 +9,61 @@ class AuthService {
 
   AuthService._();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['email', 'profile'],
-  );
+  GoogleSignIn? _googleSignIn;
+
+  GoogleSignIn get _googleSignInInstance {
+    _googleSignIn ??= _createGoogleSignIn();
+    return _googleSignIn!;
+  }
+
+  GoogleSignIn _createGoogleSignIn() {
+    if (kIsWeb) {
+      throw Exception(
+        'Google Sign-In is not configured for web. ' 
+        'Set a valid web client ID or add a proper meta tag to web/index.html.',
+      );
+    }
+
+    return GoogleSignIn(
+      scopes: ['email', 'profile'],
+    );
+  }
+
+  bool get isFirebaseInitialized => Firebase.apps.isNotEmpty;
+
+  FirebaseAuth get _auth {
+    if (!isFirebaseInitialized) {
+      throw FirebaseException(
+        plugin: 'firebase_core',
+        code: 'no-app',
+        message: 'Firebase has not been initialized.',
+      );
+    }
+    return FirebaseAuth.instance;
+  }
 
   /// Stream of auth state changes
-  Stream<User?> get authStateChanges => _auth.authStateChanges();
+  Stream<User?> get authStateChanges {
+    if (!isFirebaseInitialized) {
+      return Stream.value(null);
+    }
+    return _auth.authStateChanges();
+  }
 
   /// Current user (null if not signed in)
-  User? get currentUser => _auth.currentUser;
+  User? get currentUser => isFirebaseInitialized ? _auth.currentUser : null;
 
   /// Whether the user is signed in
-  bool get isSignedIn => _auth.currentUser != null;
+  bool get isSignedIn => currentUser != null;
 
   /// Sign in with Google — the only sign-in method
   Future<UserCredential> signInWithGoogle() async {
+    if (!isFirebaseInitialized) {
+      throw Exception('Firebase is not initialized. Google Sign-In is unavailable.');
+    }
+
     // Trigger the Google Sign-In flow
-    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    final GoogleSignInAccount? googleUser = await _googleSignInInstance.signIn();
 
     if (googleUser == null) {
       // User cancelled the sign-in
@@ -47,7 +86,9 @@ class AuthService {
 
   /// Sign out
   Future<void> signOut() async {
-    await _googleSignIn.signOut();
+    if (_googleSignIn != null) {
+      await _googleSignIn!.signOut();
+    }
     await _auth.signOut();
   }
 

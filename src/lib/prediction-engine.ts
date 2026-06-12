@@ -40,7 +40,7 @@ const CITY_SUBURBS: Record<string, string[]> = {
   "Pune": ["Pimpri", "Chinchwad", "Haveli", "Pisoli", "Ravet", "Sasewadi", "Talegaon", "Wagholi", "Avasari Khurd"],
   "Sangli": ["Miraj"],
   "Amravati": ["Badnera", "Shegaon"],
-  "Nashik": ["Nepti", "Nashik", "Nadurbar"],
+  "Nashik": ["Nepti", "Nadurbar"],
   "Kalyan": ["Dombivli", "Ulhasnagar"],
   "Kolhapur": ["Ichalkaranji", "Panhala"],
   "Solapur": ["Barshi"],

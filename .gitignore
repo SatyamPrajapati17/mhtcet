@@ -61,12 +61,23 @@ test_categories.js
 
 # Flutter app build artifacts
 cet_app/build/
+cet_app/android/build/
 cet_app/.dart_tool/
 cet_app/.packages
 cet_app/.pub/
 cet_app/.flutter-plugins*
 cet_app/ios/
 cet_app/.android/
+
+# Flutter SDK source (entire SDK extracted into the repo — very large, not for git)
+cet_app/flutter/
+
+# Flutter platform-specific build outputs
+cet_app/linux/
+cet_app/macos/
+cet_app/windows/
+cet_app/web/
+cet_app/test/
 
 # Flutter app - Firebase & signing secrets
 cet_app/android/app/google-services.json

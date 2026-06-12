@@ -28,7 +28,8 @@ class _SignInScreenState extends State<SignInScreen> {
       if (message.contains('cancelled')) {
         // User cancelled, don't show error
       } else {
-        setState(() => _error = 'Failed to sign in. Please try again.');
+        setState(() => _error =
+            'Failed to sign in. Please check Firebase configuration and try again.');
       }
     } finally {
       if (mounted) {
@@ -74,7 +75,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
+                const Text(
                   'AI-powered MHT-CET college predictions\nand counseling',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -101,13 +102,27 @@ class _SignInScreenState extends State<SignInScreen> {
                             color: AppTheme.nut900,
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 12),
+                        if (!_auth.isFirebaseInitialized) ...[
+                          const Text(
+                            'Firebase is not configured for web/local debugging, so sign-in is disabled until setup is complete.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: AppTheme.nut500,
+                              fontSize: 13,
+                              height: 1.4,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                        const SizedBox(height: 8),
 
                         // ── Google Sign-In Button ──
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton.icon(
-                            onPressed: _isLoading ? null : _signIn,
+                            onPressed:
+                                _isLoading || !_auth.isFirebaseInitialized ? null : _signIn,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
                               foregroundColor: AppTheme.nut900,
@@ -165,7 +180,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 const SizedBox(height: 40),
 
                 // ── Footer ──
-                Text(
+                const Text(
                   'Your data stays private. We only use\nGoogle to verify your identity.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
