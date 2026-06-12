@@ -74,3 +74,17 @@ www/
 
 # DebugString.js
 /debugString.js
+
+# Temporary utility scripts (not part of source)
+/scripts/add-*.ts
+/scripts/find-*.ts
+/scripts/check-*.ts
+/scripts/search-*.ts
+/scripts/analyze-*.ts
+/scripts/cleanup-*.ts
+/scripts/compare-*.ts
+/scripts/extract-*.ts
+/scripts/fix-*.ts
+/scripts/sync-*.ts
+/scripts/complete-*.ts
+/scripts/final-*.ts
