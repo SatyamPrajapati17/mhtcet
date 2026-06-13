@@ -19,6 +19,9 @@ export const metadata: Metadata = {
     "college counseling",
     "cutoff analysis",
   ],
+  verification: {
+    google: "0UzlWU5zEZIwVR4TO7Bfr8ZLgL3jFre7zpWtUjwQQfs",
+  },
 };
 
 export default function RootLayout({
