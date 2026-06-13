@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Convert single branch string to preferredBranches array
+    // Accept branches as an array for multi-select
     const body: PredictionInput = {
       percentile: Number(raw.percentile) || 0,
       marks: Number(raw.marks) || 0,
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       homeUniversity: String(raw.homeUniversity || ""),
       tfws: Boolean(raw.tfws),
       minority: Boolean(raw.minority),
-      preferredBranches: raw.branch ? [String(raw.branch)] : undefined,
+      preferredBranches: Array.isArray(raw.branches) ? raw.branches.map(String).filter(Boolean) : undefined,
       preferredColleges: raw.preferredColleges,
       city: raw.city || undefined,
       year: raw.year ? Number(raw.year) : undefined,

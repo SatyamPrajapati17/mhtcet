@@ -72,7 +72,9 @@ export default function PredictPage() {
   const [category, setCategory] = useState("GOPENS");
   const [gender, setGender] = useState("");
   const [city, setCity] = useState("");
-  const [branch, setBranch] = useState("");
+  const [selectedBranches, setSelectedBranches] = useState<string[]>([]);
+  const [branchSearch, setBranchSearch] = useState("");
+  const [branchOpen, setBranchOpen] = useState(false);
   const [tfws, setTfws] = useState(false);
   const [year, setYear] = useState("2024");
   const [capRound, setCapRound] = useState("3");
@@ -96,7 +98,7 @@ export default function PredictPage() {
   });
 
   const { data, isLoading, error, refetch } = useQuery<PredictionData>({
-    queryKey: ["predict", percentile, category, gender, city, branch, tfws, year],
+    queryKey: ["predict", percentile, category, gender, city, selectedBranches, tfws, year],
     queryFn: async () => {
       const res = await fetch("/api/predict", {
         method: "POST",
@@ -106,7 +108,7 @@ export default function PredictPage() {
           category,
           gender,
           city: city || undefined,
-          branch: branch || undefined,
+          branches: selectedBranches.length > 0 ? selectedBranches : undefined,
           tfws,
           year: parseInt(year),
           capRound: parseInt(capRound),
@@ -262,19 +264,105 @@ export default function PredictPage() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-nut-700 mb-1.5">Branch</label>
+                <div className="relative">
+                  <label className="block text-sm font-medium text-nut-700 mb-1.5">Branches</label>
                   <div className="relative">
-                    <GraduationCap className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-nut-400" />
-                    <select value={branch} onChange={(e) => setBranch(e.target.value)} className="select-cream pl-10">
-                      <option value="">All Branches</option>
-                      {branchesData ? branchesData.branches?.map((b: string) => (
-                        <option key={b} value={b}>{b}</option>
-                      )) : (
-                        <option value="" disabled>Loading...</option>
+                    <GraduationCap className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-nut-400 pointer-events-none z-10" />
+                    <button
+                      type="button"
+                      onClick={() => { setBranchOpen(!branchOpen); setBranchSearch(""); }}
+                      className="select-cream pl-10 text-left w-full"
+                    >
+                      {selectedBranches.length === 0 ? (
+                        <span className="text-nut-400">All Branches</span>
+                      ) : (
+                        <span className="text-nut-700">{selectedBranches.length} branch{selectedBranches.length > 1 ? "es" : ""} selected</span>
                       )}
-                    </select>
+                    </button>
+
+                    {/* Dropdown positioned relative to the button wrapper */}
+                    {branchOpen && branchesData?.branches && (
+                      <div className="absolute left-0 right-0 z-50 mt-1.5 doppel-outer">
+                        <div className="doppel-inner !p-2 max-h-64 overflow-y-auto space-y-0.5">
+                          <div className="sticky top-0 bg-cream-50 pb-1.5">
+                            <input
+                              type="text"
+                              value={branchSearch}
+                              onChange={(e) => setBranchSearch(e.target.value)}
+                              placeholder="Search branches..."
+                              className="input-cream text-sm !py-1.5"
+                              autoFocus
+                            />
+                          </div>
+                          {branchesData.branches
+                            .filter((b: string) => b.toLowerCase().includes(branchSearch.toLowerCase()))
+                            .map((b: string) => {
+                              const isSelected = selectedBranches.includes(b);
+                              return (
+                                <label
+                                  key={b}
+                                  className={`flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer text-sm transition-colors duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+                                    isSelected
+                                      ? "bg-terracotta-500/10 text-terracotta-700"
+                                      : "hover:bg-cream-100 text-nut-600"
+                                  }`}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={isSelected}
+                                    onChange={() => {
+                                      setSelectedBranches((prev) =>
+                                        isSelected
+                                          ? prev.filter((x) => x !== b)
+                                          : [...prev, b]
+                                      );
+                                    }}
+                                    className="h-4 w-4 rounded border-cream-400 text-terracotta-500 focus:ring-terracotta-500 focus:ring-offset-0"
+                                  />
+                                  <span>{b}</span>
+                                </label>
+                              );
+                            })}
+                          {branchesData.branches.filter((b: string) => b.toLowerCase().includes(branchSearch.toLowerCase())).length === 0 && (
+                            <p className="text-sm text-nut-400 text-center py-3">No branches match "{branchSearch}"</p>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
+
+                  {/* Selected branches as tags */}
+                  {selectedBranches.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-2 relative z-[41]">
+                      {selectedBranches.map((b) => (
+                        <span
+                          key={b}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-terracotta-500/10 text-xs font-medium text-terracotta-700"
+                        >
+                          {b}
+                          <button
+                            type="button"
+                            onClick={() => setSelectedBranches((prev) => prev.filter((x) => x !== b))}
+                            className="hover:text-terracotta-900 transition-colors"
+                          >
+                            <XCircle className="h-3 w-3" />
+                          </button>
+                        </span>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => { setSelectedBranches([]); setBranchOpen(false); }}
+                        className="text-xs text-nut-400 hover:text-nut-600 transition-colors px-1"
+                      >
+                        Clear all
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Click outside overlay — placed outside relative containers so it doesn't interfere */}
+                  {branchOpen && (
+                    <div className="fixed inset-0 z-40" onClick={() => setBranchOpen(false)} />
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
