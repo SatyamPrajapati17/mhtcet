@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import AdUnit from "@/components/AdUnit";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -279,6 +280,11 @@ export default function CollegeDetailPage() {
             Please ensure the database has been seeded.
           </div>
         )}
+      </div>
+
+      {/* ── Ad Unit ── */}
+      <div className="mt-12 pb-4">
+        <AdUnit adSlot="5019828315" format="horizontal" className="max-w-3xl mx-auto" />
       </div>
     </div>
   );

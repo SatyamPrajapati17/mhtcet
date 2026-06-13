@@ -16,6 +16,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import AdUnit from "@/components/AdUnit";
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<"overview" | "saved" | "history">(
@@ -186,6 +187,11 @@ export default function DashboardPage() {
           </div>
         </Card>
       )}
+
+      {/* ── Ad Unit ── */}
+      <div className="mt-12 pb-4">
+        <AdUnit adSlot="5019828315" format="horizontal" className="max-w-3xl mx-auto" />
+      </div>
     </div>
   );
 }

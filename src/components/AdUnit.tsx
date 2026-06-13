@@ -10,7 +10,7 @@ interface AdUnitProps {
   className?: string;
 }
 
-const FALLBACK_SLOT = "1234567890";
+const FALLBACK_SLOT = "5019828315";
 
 export default function AdUnit({
   adSlot = FALLBACK_SLOT,
@@ -38,6 +38,7 @@ export default function AdUnit({
 
   return (
     <div className={`flex justify-center ${className}`}>
+      {/* cet */}
       <ins
         className="adsbygoogle"
         style={{ display: "block" }}

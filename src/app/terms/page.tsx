@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Scale, ArrowRight } from "lucide-react";
+import AdUnit from "@/components/AdUnit";
 import Link from "next/link";
 
 const sections = [
@@ -149,6 +150,11 @@ export default function TermsPage() {
               </Link>
             </motion.div>
           </motion.div>
+        </div>
+
+        {/* ── Ad Unit ── */}
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+          <AdUnit adSlot="5019828315" format="horizontal" />
         </div>
       </section>
     </div>
