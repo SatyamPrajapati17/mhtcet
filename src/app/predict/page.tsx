@@ -89,7 +89,7 @@ export default function PredictPage() {
     document.addEventListener("touchstart", handleClick, { passive: true });
     return () => {
       document.removeEventListener("mousedown", handleClick);
-      document.removeEventListener("touchstart", handleClick);
+      document.removeEventListener("touchstart", handleClick, { passive: true });
     };
   }, [branchOpen]);
   const [tfws, setTfws] = useState(false);
