@@ -471,7 +471,7 @@ export default function PredictPage() {
 
       {/* ── Ad Unit ── */}
       <div className="mt-12 pb-4">
-        <AdUnit adSlot="1234567890" format="horizontal" className="max-w-3xl mx-auto" />
+        <AdUnit adSlot="5019828315" format="horizontal" className="max-w-3xl mx-auto" />
       </div>
     </div>
   );

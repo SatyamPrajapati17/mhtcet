@@ -346,7 +346,7 @@ export default function Home() {
       {/* ── Ad Unit ── */}
       <div className="section-cream border-t border-cream-200">
         <div className="section-container">
-          <AdUnit adSlot="1234567890" format="horizontal" className="max-w-3xl mx-auto" />
+          <AdUnit adSlot="5019828315" format="horizontal" className="max-w-3xl mx-auto" />
         </div>
       </div>
 
