@@ -150,15 +150,15 @@ export default function CollegeDetailPage() {
       </Card>
 
       {/* Branches & Cutoffs */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-xl font-semibold text-gray-900">
           Branches &amp; Cutoff History
         </h2>
 
-        {/* Year Filter Tabs */}
-        <div className="flex items-center gap-3">
+        {/* Year & CAP Round Filter Tabs */}
+        <div className="flex flex-wrap items-center gap-2">
           {availableYears.length > 1 && (
-            <div className="flex gap-1 rounded-lg bg-gray-100 p-1">
+            <div className="flex gap-1 rounded-lg bg-gray-100 p-1 overflow-x-auto">
               {availableYears.map((year: number) => (
                 <button
                   key={year}
@@ -167,26 +167,25 @@ export default function CollegeDetailPage() {
                     setSelectedCapRound(null);
                   }}
                   className={cn(
-                    "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-all",
+                    "whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-all",
                     activeYear === year
                       ? "bg-white text-blue-700 shadow-sm"
                       : "text-gray-600 hover:text-gray-900"
                   )}
                 >
-                  <CalendarDays className="h-3.5 w-3.5" />
+                  <CalendarDays className="inline h-3.5 w-3.5 mr-1" />
                   {year}-{String(year + 1).slice(2)}
                 </button>
               ))}
             </div>
           )}
 
-          {/* CAP Round Filter Tabs */}
           {availableCapRounds.length > 1 && (
-            <div className="flex gap-1 rounded-lg bg-gray-100 p-1">
+            <div className="flex gap-1 rounded-lg bg-gray-100 p-1 overflow-x-auto">
               <button
                 onClick={() => setSelectedCapRound(null)}
                 className={cn(
-                  "rounded-md px-3 py-1.5 text-sm font-medium transition-all",
+                  "whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-all",
                   activeCapRound === null
                     ? "bg-white text-blue-700 shadow-sm"
                     : "text-gray-500 hover:text-gray-900"
@@ -199,7 +198,7 @@ export default function CollegeDetailPage() {
                   key={round}
                   onClick={() => setSelectedCapRound(round)}
                   className={cn(
-                    "rounded-md px-3 py-1.5 text-sm font-medium transition-all",
+                    "whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-all",
                     activeCapRound === round
                       ? "bg-white text-blue-700 shadow-sm"
                       : "text-gray-600 hover:text-gray-900"
@@ -233,8 +232,9 @@ export default function CollegeDetailPage() {
                 </div>
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+              <div className="overflow-x-auto -mx-3 sm:mx-0 scrollbar-hide">
+                <div className="inline-block min-w-full px-3 sm:px-0">
+                <table className="w-full text-sm whitespace-nowrap sm:whitespace-normal">
                   <thead>
                     <tr className="border-b text-left text-xs text-gray-500">
                       <th className="pb-2 pr-4">Year</th>
@@ -269,6 +269,7 @@ export default function CollegeDetailPage() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
             </Card>
           );

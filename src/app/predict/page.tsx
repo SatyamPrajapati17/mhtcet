@@ -283,7 +283,7 @@ export default function PredictPage() {
                     {/* Dropdown positioned relative to the button wrapper */}
                     {branchOpen && branchesData?.branches && (
                       <div className="absolute left-0 right-0 z-50 mt-1.5 doppel-outer">
-                        <div className="doppel-inner !p-2 max-h-64 overflow-y-auto space-y-0.5">
+                        <div className="doppel-inner !p-2 max-h-[50dvh] overflow-y-auto space-y-0.5">
                           <div className="sticky top-0 bg-cream-50 pb-1.5">
                             <input
                               type="text"

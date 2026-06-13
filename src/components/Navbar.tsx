@@ -20,8 +20,8 @@ export default function Navbar() {
   return (
     <>
       {/* ── Fluid Island Nav ── */}
-      <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-max px-4">
-        <nav className="fluid-island rounded-full px-2 sm:px-3 h-12 flex items-center gap-1">
+      <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-max max-w-[calc(100vw-32px)] px-0">
+        <nav className="fluid-island rounded-full px-2 sm:px-3 h-12 flex items-center gap-0.5 sm:gap-1">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 pr-3 pl-1 group">
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-terracotta-500 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-105">

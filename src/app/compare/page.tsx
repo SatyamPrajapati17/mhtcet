@@ -106,7 +106,7 @@ export default function ComparePage() {
       <Card className="mb-8">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {collegeSlugs.map((slug, index) => (
-            <div key={index} className="space-y-2">
+            <div key={index} className="space-y-2 relative">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium text-gray-700">
                   College {index + 1}
@@ -114,9 +114,10 @@ export default function ComparePage() {
                 {collegeSlugs.length > 2 && (
                   <button
                     onClick={() => removeSlot(index)}
-                    className="text-gray-400 hover:text-red-500 transition-colors"
+                    className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                    aria-label="Remove college"
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-5 w-5" />
                   </button>
                 )}
               </div>
@@ -128,16 +129,16 @@ export default function ComparePage() {
                   onChange={(e) => updateSlot(index, e.target.value)}
                   onFocus={() => setActiveSearchIndex(index)}
                   placeholder="College name or slug..."
-                  className="w-full rounded-lg border border-gray-200 py-2 pl-9 pr-3 text-sm focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
+                  className="w-full rounded-lg border border-gray-200 py-2.5 pl-9 pr-3 text-sm focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
                 />
               </div>
               {activeSearchIndex === index && searchResults?.colleges?.length > 0 && (
-                <div className="absolute z-10 mt-1 w-full rounded-lg border bg-white shadow-lg">
+                <div className="absolute z-20 mt-1 w-full rounded-lg border bg-white shadow-lg max-h-48 overflow-y-auto">
                   {searchResults.colleges.map((c: any) => (
                     <button
                       key={c.id}
                       onClick={() => selectCollege(index, c.slug)}
-                      className="w-full px-3 py-2 text-left text-sm hover:bg-gray-50"
+                      className="w-full px-3 py-2.5 text-left text-sm hover:bg-gray-50 border-b border-gray-100 last:border-0"
                     >
                       {c.name}
                     </button>
@@ -150,9 +151,9 @@ export default function ComparePage() {
           {collegeSlugs.length < 4 && (
             <button
               onClick={addSlot}
-              className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-3 text-sm text-gray-500 hover:border-emerald-400 hover:text-emerald-600 transition-colors"
+              className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-4 text-sm text-gray-500 hover:border-emerald-400 hover:text-emerald-600 transition-colors min-h-[44px]"
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-5 w-5" />
               Add College
             </button>
           )}
@@ -180,8 +181,9 @@ export default function ComparePage() {
       {/* Results */}
       {data && data.colleges.length > 0 && (
         <div className="animate-fade-in space-y-6">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <div className="overflow-x-auto -mx-4 sm:mx-0 scrollbar-hide">
+            <div className="inline-block min-w-full px-4 sm:px-0">
+            <table className="w-full text-sm whitespace-nowrap sm:whitespace-normal">
               <thead>
                 <tr className="border-b">
                   <th className="py-3 pr-4 text-left font-medium text-gray-500 w-40">
@@ -249,6 +251,7 @@ export default function ComparePage() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       )}
