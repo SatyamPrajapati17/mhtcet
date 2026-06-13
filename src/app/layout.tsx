@@ -19,6 +19,9 @@ export const metadata: Metadata = {
     "college counseling",
     "cutoff analysis",
   ],
+  other: {
+    "google-adsense-account": "ca-pub-8538444055043811",
+  },
 };
 
 export default function RootLayout({
