@@ -6,6 +6,7 @@ import { BarChart3, Loader2, Plus, X, Search } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import AdUnit from "@/components/AdUnit";
 
 type CompareData = {
   colleges: Array<{
@@ -251,6 +252,11 @@ export default function ComparePage() {
           </div>
         </div>
       )}
+
+      {/* ── Ad Unit ── */}
+      <div className="mt-12 pb-4">
+        <AdUnit adSlot="1234567890" format="horizontal" className="max-w-3xl mx-auto" />
+      </div>
 
       {!data && !isLoading && data !== null && (
         <div className="flex flex-col items-center justify-center py-20 text-center">

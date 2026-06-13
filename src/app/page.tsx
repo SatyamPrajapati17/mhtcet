@@ -14,6 +14,7 @@ import {
   Sparkles,
   ChevronDown,
 } from "lucide-react";
+import AdUnit from "@/components/AdUnit";
 
 const stats = [
   { label: "Colleges", value: "300+", icon: GraduationCap },
@@ -339,6 +340,13 @@ export default function Home() {
               </p>
             </motion.div>
           ))}
+        </div>
+      </div>
+
+      {/* ── Ad Unit ── */}
+      <div className="section-cream border-t border-cream-200">
+        <div className="section-container">
+          <AdUnit adSlot="1234567890" format="horizontal" className="max-w-3xl mx-auto" />
         </div>
       </div>
 

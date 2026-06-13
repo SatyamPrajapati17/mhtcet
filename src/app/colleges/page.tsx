@@ -13,6 +13,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import AdUnit from "@/components/AdUnit";
 
 function CollegeSkeleton() {
   return (
@@ -245,6 +246,11 @@ export default function CollegesPage() {
           </p>
         </motion.div>
       )}
+
+      {/* ── Ad Unit ── */}
+      <div className="mt-12 pb-4">
+        <AdUnit adSlot="1234567890" format="horizontal" className="max-w-3xl mx-auto" />
+      </div>
     </div>
   );
 }

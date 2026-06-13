@@ -32,6 +32,11 @@ export default function RootLayout({
         className={`${GeistSans.variable} ${GeistMono.variable} font-sans antialiased`}
       >
         <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8538444055043811"
+          strategy="beforeInteractive"
+          crossOrigin="anonymous"
+        />
+        <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-XRGBLK7FR5"
           strategy="afterInteractive"
         />
@@ -43,11 +48,6 @@ export default function RootLayout({
             gtag('config', 'G-XRGBLK7FR5');
           `}
         </Script>
-        <Script
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8538444055043811"
-          strategy="beforeInteractive"
-          crossOrigin="anonymous"
-        />
         <Providers>
           <div className="min-h-[100dvh] flex flex-col">
             <Navbar />
