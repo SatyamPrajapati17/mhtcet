@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -75,6 +75,23 @@ export default function PredictPage() {
   const [selectedBranches, setSelectedBranches] = useState<string[]>([]);
   const [branchSearch, setBranchSearch] = useState("");
   const [branchOpen, setBranchOpen] = useState(false);
+  const branchRef = useRef<HTMLDivElement>(null);
+
+  // Close branch dropdown on click outside
+  useEffect(() => {
+    if (!branchOpen) return;
+    const handleClick = (e: Event) => {
+      if (branchRef.current && !branchRef.current.contains(e.target as Node)) {
+        setBranchOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("touchstart", handleClick, { passive: true });
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("touchstart", handleClick);
+    };
+  }, [branchOpen]);
   const [tfws, setTfws] = useState(false);
   const [year, setYear] = useState("2024");
   const [capRound, setCapRound] = useState("3");
@@ -264,10 +281,10 @@ export default function PredictPage() {
                   </div>
                 </div>
 
-                <div className="relative">
+                <div ref={branchRef} className="relative">
                   <label className="block text-sm font-medium text-nut-700 mb-1.5">Branches</label>
                   <div className="relative">
-                    <GraduationCap className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-nut-400 pointer-events-none z-10" />
+                    <GraduationCap className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-nut-400 pointer-events-none" />
                     <button
                       type="button"
                       onClick={() => { setBranchOpen(!branchOpen); setBranchSearch(""); }}
@@ -280,9 +297,8 @@ export default function PredictPage() {
                       )}
                     </button>
 
-                    {/* Dropdown positioned relative to the button wrapper */}
                     {branchOpen && branchesData?.branches && (
-                      <div className="absolute left-0 right-0 z-50 mt-1.5 doppel-outer">
+                      <div className="absolute left-0 right-0 mt-1.5 z-10 doppel-outer">
                         <div className="doppel-inner !p-2 max-h-[50dvh] overflow-y-auto space-y-0.5">
                           <div className="sticky top-0 bg-cream-50 pb-1.5">
                             <input
@@ -331,9 +347,8 @@ export default function PredictPage() {
                     )}
                   </div>
 
-                  {/* Selected branches as tags */}
                   {selectedBranches.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mt-2 relative z-[41]">
+                    <div className="flex flex-wrap gap-1.5 mt-2">
                       {selectedBranches.map((b) => (
                         <span
                           key={b}
@@ -357,11 +372,6 @@ export default function PredictPage() {
                         Clear all
                       </button>
                     </div>
-                  )}
-
-                  {/* Click outside overlay — placed outside relative containers so it doesn't interfere */}
-                  {branchOpen && (
-                    <div className="fixed inset-0 z-40" onClick={() => setBranchOpen(false)} />
                   )}
                 </div>
 
