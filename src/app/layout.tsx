@@ -88,6 +88,9 @@ export default function RootLayout({
             <Footer />
           </div>
         </Providers>
+
+        {/* Social bar */}
+        <script src="https://pl29843784.effectivecpmnetwork.com/53/a0/b1/53a0b1263417bec51582fc951fd6e493.js"></script>
       </body>
     </html>
   );
