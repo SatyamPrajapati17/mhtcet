@@ -63,6 +63,12 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
+        {/* Popunder ad */}
+        <Script
+          src="https://pl29843597.effectivecpmnetwork.com/23/8c/36/238c3631e0e8b9ad509e6ffe8805b742.js"
+          strategy="beforeInteractive"
+        />
+
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-XRGBLK7FR5"
           strategy="afterInteractive"
