@@ -63,12 +63,6 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* Popunder ad */}
-        <Script
-          src="https://pl29843597.effectivecpmnetwork.com/23/8c/36/238c3631e0e8b9ad509e6ffe8805b742.js"
-          strategy="beforeInteractive"
-        />
-
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-XRGBLK7FR5"
           strategy="afterInteractive"
@@ -89,8 +83,6 @@ export default function RootLayout({
           </div>
         </Providers>
 
-        {/* Social bar */}
-        <script src="https://pl29843784.effectivecpmnetwork.com/53/a0/b1/53a0b1263417bec51582fc951fd6e493.js"></script>
       </body>
     </html>
   );
